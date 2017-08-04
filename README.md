@@ -1,7 +1,6 @@
 # AWS lambda@edge Example
 
 
-
 ## Overview
 
 ```mermaid
@@ -22,9 +21,9 @@ c--4.Viewer RES-->e
 
 1. Functions cannot invoke calls to resouces outside CloudFornt Pops.
    1. resources at origin servers, access to services in AWS regions such as S3 buckets, DynamoDB tables, etc.
-1. Memory is restricted to 128 MB
-1. Timeout is restricted to 50 ms.
-1. A custom VPC cannot be associated with a Lambda function at the edge.
+2. Memory is restricted to 128 MB
+3. Timeout is restricted to 50 ms.
+4. A custom VPC cannot be associated with a Lambda function at the edge.
 
 
 ### Headers
@@ -33,7 +32,7 @@ http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/header-restric
 
 
 
-## Role
+### Role
 
 http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/logging.html
 
@@ -61,16 +60,7 @@ Trust Relationship 을 수정하지 않으면 로그가 안남는다.
 }
 ```
 
-
-
 별도로 실행 role을 만드는 편이 좋다.
-
-
-
-## Test Contents
-
-1. https://s3.amazonaws.com/june26-edge-virginia/E_major.mp3
-1. https://s3.ap-northeast-2.amazonaws.com/june26-edge-seoul/Piano_Dream.mp3
 
 ## 1. Request Path to Lowercase
 
@@ -89,6 +79,7 @@ c--4.Viewer RES-->e
 ```
 
 Bucket Policy
+
 ``` json
 {
     "Version": "2012-10-17",
@@ -104,8 +95,6 @@ Bucket Policy
 }
 ```
 
-
-
 다음 URL을 이용해서 테스트 해볼 것.
 
 http://d1hsmabf5nzeds.cloudfront.net/e_MAjor.mp3
@@ -120,7 +109,7 @@ https://s3.ap-northeast-2.amazonaws.com/june26-edge-seoul/e_major.mp3
 
 CF로 요청되어지는 Request의 컨텐츠에 대해, OriginA에서 404코드가 떨어지면, 다른 OriginB으로 재 요청하는 기능
 
-http redirect가 어떨까? 
+http redirect가 어떨까?
 
 
 ```mermaid
@@ -138,11 +127,9 @@ e--5-->c
 c-->o2
 o2-->c
 c-->e
-
-
 ```
 
-즉, 
+즉,
 
 http://d1hsmabf5nzeds.cloudfront.net/old.jpg
 
@@ -151,4 +138,3 @@ http://d1hsmabf5nzeds.cloudfront.net/old.jpg
 rewrite기능 구현, [http://mv.example.com/main.mp4](http://mv.example.com/main.mp4)를 요청시, intro.mp4 가 먼저 전송되고, main.mp4가 전송되도록 구현.
 
 rewrite URL from req.jpg to req.html to show image with contextual infomation and relevant ads
-
